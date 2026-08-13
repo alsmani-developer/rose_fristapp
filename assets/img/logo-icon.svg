@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" role="img" aria-label="ROSE VIP">
+  <g transform="translate(60 60)" stroke="#F39200" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle r="50"/>
+    <path d="M0-6 C8-20 4-36 0-42 C-4-36 -8-20 0-6Z" transform="rotate(0)"/>
+    <path d="M0-6 C8-20 4-36 0-42 C-4-36 -8-20 0-6Z" transform="rotate(45)"/>
+    <path d="M0-6 C8-20 4-36 0-42 C-4-36 -8-20 0-6Z" transform="rotate(90)"/>
+    <path d="M0-6 C8-20 4-36 0-42 C-4-36 -8-20 0-6Z" transform="rotate(135)"/>
+    <path d="M0-6 C8-20 4-36 0-42 C-4-36 -8-20 0-6Z" transform="rotate(180)"/>
+    <path d="M0-6 C8-20 4-36 0-42 C-4-36 -8-20 0-6Z" transform="rotate(225)"/>
+    <path d="M0-6 C8-20 4-36 0-42 C-4-36 -8-20 0-6Z" transform="rotate(270)"/>
+    <path d="M0-6 C8-20 4-36 0-42 C-4-36 -8-20 0-6Z" transform="rotate(315)"/>
+    <circle r="4" fill="#F39200" stroke="none"/>
+  </g>
+</svg>

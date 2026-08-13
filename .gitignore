@@ -1,0 +1,15 @@
+# Dependencies / OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Local runtime / uploads / secrets
+data/uploads/*
+!data/uploads/.gitkeep
+data/uploads/.htaccess
+*.tmp
+
+# Editor
+.idea/
+.vscode/
+*.swp

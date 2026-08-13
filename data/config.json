@@ -1,0 +1,43 @@
+{
+    "admin_password": "admin123",
+    "banner": {
+        "image": "banner_20260812_194719_2a7231b9.jpg",
+        "ar": {
+            "title": "نقل سيارتك",
+            "title_highlight": "بكل أمان واحترافية",
+            "subtitle": "خدمات نقل السيارات داخل المملكة العربية السعودية",
+            "feature_1": "عناية واهتمام من الاستلام حتى التسليم",
+            "feature_2": "سرعة في التسليم وفي الوقت المحدد",
+            "feature_3": "أمان كامل على سيارتك",
+            "cta_text": "اطلب نقل سيارتك الآن"
+        },
+        "en": {
+            "title": "Transport your car",
+            "title_highlight": "with total safety and professionalism",
+            "subtitle": "Car transport services across the Kingdom of Saudi Arabia",
+            "feature_1": "Care and attention from pickup to delivery",
+            "feature_2": "Fast delivery, always on time",
+            "feature_3": "Complete safety for your car",
+            "cta_text": "Request your car transport now"
+        }
+    },
+    "contact": {
+        "phone": "0501234567",
+        "whatsapp": "0501234567",
+        "email": "info@rosevip.sa",
+        "ar": {
+            "address": "المملكة العربية السعودية",
+            "cta_banner_text": "سيارتك تستحق الأفضل — تواصل معنا الآن واحصل على أفضل خدمة نقل"
+        },
+        "en": {
+            "address": "Kingdom of Saudi Arabia",
+            "cta_banner_text": "Your car deserves the best — contact us now for the best transport service"
+        }
+    },
+    "social": {
+        "instagram": "https:\/\/instagram.com\/",
+        "x": "https:\/\/x.com\/",
+        "snapchat": "https:\/\/snapchat.com\/",
+        "tiktok": "https:\/\/tiktok.com\/"
+    }
+}
