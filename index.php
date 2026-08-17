@@ -25,9 +25,11 @@ $contact = [
     'email' => $contactCfg['email'] ?? '',
     'address' => localized($contactCfg, 'address'),
     'cta_banner_text' => localized($contactCfg, 'cta_banner_text'),
+    'cta_image' => $contactCfg['cta_image'] ?? '',
 ];
 
 $heroImage = public_upload_url($banner['image'] ?? '');
+$ctaImage = cta_image_url($contact['cta_image'] ?? '');
 $waUrl = whatsapp_link($contact['whatsapp'], __('wa_prefill'));
 $phoneUrl = phone_tel($contact['phone']);
 $lang = lang_attr();
@@ -402,7 +404,7 @@ $gallery = load_gallery();
     </section>
 
     <section class="cta-banner" id="contact">
-        <div class="cta-banner-bg" style="background-image:url('assets/img/cta-banner.png')"></div>
+        <div class="cta-banner-bg" style="background-image:url('<?= e($ctaImage) ?>')"></div>
         <div class="cta-banner-overlay"></div>
         <div class="container cta-banner-inner">
             <h2><?= e($ctaTitle) ?></h2>

@@ -26,8 +26,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('contact.php');
     }
 
+    if (!empty($_POST['remove_cta_image'])) {
+        $old = (string) ($config['contact']['cta_image'] ?? '');
+        if ($old !== '') {
+            $oldPath = data_path('uploads/' . basename($old));
+            if (is_file($oldPath)) {
+                unlink($oldPath);
+            }
+        }
+        $config['contact']['cta_image'] = '';
+    }
+
+    if (!empty($_FILES['cta_image']['name']) && ($_FILES['cta_image']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_OK) {
+        $tmp = (string) $_FILES['cta_image']['tmp_name'];
+        $size = (int) ($_FILES['cta_image']['size'] ?? 0);
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($tmp) ?: '';
+        $allowed = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp',
+            'image/gif' => 'gif',
+        ];
+
+        if ($size > 5 * 1024 * 1024) {
+            flash_set('error', 'حجم صورة الفوتر يجب ألا يتجاوز 5MB');
+            redirect('contact.php');
+        }
+
+        if (!isset($allowed[$mime])) {
+            flash_set('error', 'صيغة صورة الفوتر غير مدعومة');
+            redirect('contact.php');
+        }
+
+        $filename = 'cta_' . date('Ymd_His') . '_' . bin2hex(random_bytes(4)) . '.' . $allowed[$mime];
+        $destDir = data_path('uploads');
+        if (!is_dir($destDir)) {
+            mkdir($destDir, 0755, true);
+        }
+        $dest = $destDir . DIRECTORY_SEPARATOR . $filename;
+
+        if (!move_uploaded_file($tmp, $dest)) {
+            flash_set('error', 'تعذر رفع صورة الفوتر');
+            redirect('contact.php');
+        }
+
+        $old = (string) ($config['contact']['cta_image'] ?? '');
+        if ($old !== '' && $old !== $filename) {
+            $oldPath = data_path('uploads/' . basename($old));
+            if (is_file($oldPath)) {
+                unlink($oldPath);
+            }
+        }
+
+        $config['contact']['cta_image'] = $filename;
+    }
+
     if (save_config($config)) {
-        flash_set('success', 'تم تحديث قنوات التواصل');
+        flash_set('success', 'تم تحديث قنوات التواصل وصورة الفوتر');
     } else {
         flash_set('error', 'تعذر الحفظ');
     }
@@ -40,7 +96,7 @@ $ar = $contact['ar'] ?? [];
 $en = $contact['en'] ?? [];
 admin_layout_start('قنوات التواصل', 'contact');
 ?>
-<form class="admin-form admin-form-wide" method="post">
+<form class="admin-form admin-form-wide" method="post" enctype="multipart/form-data">
     <div class="form-row">
         <label for="phone">رقم الهاتف</label>
         <input type="text" id="phone" name="phone" value="<?= e($contact['phone'] ?? '') ?>" required>
@@ -52,6 +108,21 @@ admin_layout_start('قنوات التواصل', 'contact');
     <div class="form-row">
         <label for="email">البريد الإلكتروني</label>
         <input type="email" id="email" name="email" value="<?= e($contact['email'] ?? '') ?>" required>
+    </div>
+
+    <div class="form-row">
+        <label for="cta_image">صورة بانر الفوتر / التواصل</label>
+        <div class="preview">
+            <img src="../<?= e(cta_image_url($contact['cta_image'] ?? '')) ?>" alt="صورة الفوتر الحالية">
+            <?php if (!empty($contact['cta_image'])): ?>
+                <label class="checkbox">
+                    <input type="checkbox" name="remove_cta_image" value="1">
+                    حذف الصورة الحالية واستخدام الافتراضية
+                </label>
+            <?php endif; ?>
+        </div>
+        <input type="file" id="cta_image" name="cta_image" accept="image/jpeg,image/png,image/webp,image/gif">
+        <small>المقاس المقترح: 1920×700 — JPG/PNG/WEBP بحد أقصى 5MB</small>
     </div>
 
     <div class="lang-panels">

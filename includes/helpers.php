@@ -141,6 +141,7 @@ function default_config(): array
             'phone' => '0501234567',
             'whatsapp' => '0501234567',
             'email' => 'info@rosevip.sa',
+            'cta_image' => '',
             'ar' => [
                 'address' => 'المملكة العربية السعودية',
                 'cta_banner_text' => 'سيارتك تستحق الأفضل — تواصل معنا الآن واحصل على أفضل خدمة نقل',
@@ -219,6 +220,14 @@ function public_upload_url(?string $filename): string
 {
     if (!$filename) {
         return 'assets/img/hero-banner.png';
+    }
+    return 'serve-upload.php?f=' . rawurlencode(basename($filename));
+}
+
+function cta_image_url(?string $filename): string
+{
+    if (!$filename) {
+        return 'assets/img/cta-banner.png';
     }
     return 'serve-upload.php?f=' . rawurlencode(basename($filename));
 }
