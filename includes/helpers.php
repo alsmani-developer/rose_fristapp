@@ -116,6 +116,7 @@ function default_config(): array
 {
     return [
         'admin_password' => 'admin123',
+        'notification_email' => 'info@rosevip.sa',
         'banner' => [
             'image' => '',
             'ar' => [
@@ -246,6 +247,39 @@ function load_quotes(): array
 function save_quotes(array $quotes): bool
 {
     return write_json(quotes_path(), array_values($quotes));
+}
+
+function notify_new_quote(array $quote, array $config): bool
+{
+    $to = trim((string) ($config['notification_email'] ?? $config['contact']['email'] ?? ''));
+    if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
+        return false;
+    }
+
+    $subject = '=?UTF-8?B?' . base64_encode('طلب عرض سعر جديد - Rose VIP') . '?=';
+
+    $vehicleType = (string) ($quote['vehicle_type'] ?? '');
+    $transportMethod = (string) ($quote['transport_method'] ?? '');
+    $fromCity = (string) ($quote['from_city'] ?? '');
+    $toCity = (string) ($quote['to_city'] ?? '');
+    $phone = (string) ($quote['phone'] ?? '');
+    $transportDate = (string) ($quote['transport_date'] ?? '');
+    $createdAt = (string) ($quote['created_at'] ?? '');
+
+    $body = "تفاصيل الطلب الجديد:\n\n"
+        . "نوع المركبة: {$vehicleType}\n"
+        . "طريقة النقل: {$transportMethod}\n"
+        . "من: {$fromCity}\n"
+        . "إلى: {$toCity}\n"
+        . "رقم الجوال: {$phone}\n"
+        . "موعد النقل: {$transportDate}\n"
+        . "وقت الإرسال: {$createdAt}\n";
+
+    $headers = "MIME-Version: 1.0\r\n"
+        . "Content-Type: text/plain; charset=UTF-8\r\n"
+        . "From: Rose VIP <no-reply@" . ($_SERVER['HTTP_HOST'] ?? 'localhost') . ">\r\n";
+
+    return @mail($to, $subject, $body, $headers);
 }
 
 function gallery_path(): string

@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $config['contact']['phone'] = trim((string) ($_POST['phone'] ?? ''));
     $config['contact']['whatsapp'] = trim((string) ($_POST['whatsapp'] ?? ''));
     $config['contact']['email'] = trim((string) ($_POST['email'] ?? ''));
+    $config['notification_email'] = trim((string) ($_POST['notification_email'] ?? ''));
     $config['contact']['ar']['address'] = trim((string) ($_POST['ar_address'] ?? ''));
     $config['contact']['ar']['cta_banner_text'] = trim((string) ($_POST['ar_cta_banner_text'] ?? ''));
     $config['contact']['en']['address'] = trim((string) ($_POST['en_address'] ?? ''));
@@ -23,6 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!filter_var($config['contact']['email'], FILTER_VALIDATE_EMAIL)) {
         flash_set('error', 'البريد الإلكتروني غير صحيح');
+        redirect('contact.php');
+    }
+
+    if ($config['notification_email'] === '' || !filter_var($config['notification_email'], FILTER_VALIDATE_EMAIL)) {
+        flash_set('error', 'بريد استلام إشعارات الطلبات غير صحيح');
         redirect('contact.php');
     }
 
@@ -108,6 +114,11 @@ admin_layout_start('قنوات التواصل', 'contact');
     <div class="form-row">
         <label for="email">البريد الإلكتروني</label>
         <input type="email" id="email" name="email" value="<?= e($contact['email'] ?? '') ?>" required>
+    </div>
+    <div class="form-row">
+        <label for="notification_email">بريد استلام إشعارات الطلبات</label>
+        <input type="email" id="notification_email" name="notification_email" value="<?= e($config['notification_email'] ?? '') ?>" required>
+        <small>يصلك بريد تلقائي كل مرة يرسل فيها عميل طلب عرض سعر</small>
     </div>
 
     <div class="form-row">

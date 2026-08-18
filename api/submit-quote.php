@@ -106,4 +106,6 @@ if (!save_quotes($quotes)) {
     exit;
 }
 
+notify_new_quote(end($quotes), load_config());
+
 echo json_encode(['ok' => true, 'message' => $msg['success']], JSON_UNESCAPED_UNICODE);
