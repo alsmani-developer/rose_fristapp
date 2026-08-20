@@ -8,6 +8,13 @@ function base_path(string $path = ''): string
     return $path === '' ? $root : $root . DIRECTORY_SEPARATOR . ltrim(str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path), DIRECTORY_SEPARATOR);
 }
 
+function asset_url(string $relativePath): string
+{
+    $fullPath = base_path($relativePath);
+    $version = is_file($fullPath) ? filemtime($fullPath) : time();
+    return $relativePath . '?v=' . $version;
+}
+
 function data_path(string $path = ''): string
 {
     return base_path('data' . ($path !== '' ? '/' . ltrim($path, '/') : ''));
@@ -210,11 +217,6 @@ function phone_tel(string $number): string
 {
     $digits = preg_replace('/\D+/', '', $number) ?? '';
     return 'tel:+' . (str_starts_with($digits, '0') ? '966' . substr($digits, 1) : $digits);
-}
-
-function asset_url(string $path): string
-{
-    return '/' . ltrim(str_replace('\\', '/', $path), '/');
 }
 
 function public_upload_url(?string $filename): string
